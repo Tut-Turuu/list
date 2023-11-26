@@ -1,38 +1,18 @@
 #include "list.hpp"
 
 
-namespace list {
-
-    template<typename T>
-    struct Node {
-        T data;
-        Node* next;
-
-        Node() {
-            data = T();
-            next = nullptr;
-        }
-
-        Node(T data, Node* next) {
-            this->data = data;
-            this->next = next;
-        }
-    };
-
-
+namespace lst {
 
     template<typename T>
     class List {
 
-        Node<T>* head;
-
     public:
 
-        List() {
-            head = Node<T>();
-        }
+        List(T data, Node<T>* next);
 
-        void push_back();
+        ~List();
+
+        void push_back(T data);
 
         void insert();
 
@@ -43,19 +23,79 @@ namespace list {
         void dublicate_el();
 
         void swap_elems();
+
+    private:
+
+        template<typename T>
+        class Node {
+            
+            public:
+            Node<T>* next;
+            T data;
+
+            Node(T data = T(), Node* next = nullptr) {
+                this->data = data;
+                this->next = next;
+            }
+        };
+
+        int size;
+        Node<T>* head;
 
     };
 
-        void push_back();
+    template<typename T>
+    List<T>::List(T data = T(), Node<T>* next = nullptr) {
 
-        void insert();
+    }
 
-        void print();
+    template<typename T>
+    List<T>::~List() {
 
-        void delete_el();
+    }
 
-        void dublicate_el();
+    template<typename T>
+    void List<T>::push_back(T data) {
 
-        void swap_elems();
+        if (head == nullptr) {
+
+            head = new Node<T>(data);
+
+        } else {
+            
+            Node<T>* current = this->head;
+            while (current->next != nullptr) {
+                current = current->next;
+            }
+
+            current->next = new Node<T>(data);
+
+        }
+    }
+
+    template<typename T>
+    void List<T>::insert() {
+
+    }
+
+    template<typename T>
+    void List<T>::print() {
+
+    }
+
+    template<typename T>
+    void List<T>::delete_el() {
+
+    }
+
+    template<typename T>
+    void List<T>::dublicate_el() {
+
+    }
+
+    template<typename T>
+    void List<T>::swap_elems() {
+
+    }
 
 }
