@@ -8,6 +8,7 @@ namespace lst {
 
     public:
 
+        template<typename T>
         List(T data, Node<T>* next);
 
         ~List();
