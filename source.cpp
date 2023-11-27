@@ -17,6 +17,8 @@ public:
 
     void dublicate_el(int index);
 
+    void swap(int index_a, int index_b);
+
 private:
 
     class Node {
@@ -69,7 +71,7 @@ void List<T>::push_back(T data) {
 
 template<typename T>
 T List<T>::at(int index) {
-    if (index > size) {
+    if (index >= size) {
         throw std::out_of_range("Out of range");
     }
     Node* current = head;
@@ -81,7 +83,7 @@ T List<T>::at(int index) {
 
 template<typename T>
 void List<T>::delete_el(int index) {
-    if (this->head == nullptr) {
+    if (this->size <= index) {
         throw std::out_of_range("Out of range");
     }
     Node* previous;
@@ -97,7 +99,53 @@ void List<T>::delete_el(int index) {
 
 template<typename T>
 void List<T>::dublicate_el(int index) {
-    
+    if (this->size <= index) {
+        throw std::out_of_range("Out of range");
+    }
+
+    Node* current = this->head;
+
+    if (this->size == index + 1) {
+        for (int i = 0; i < index; i++) {
+            current = current->next;
+        }
+        T data = current->data;
+        current->next = new Node(data);
+    } else {
+        for (int i = 0; i < index; i++) {
+            current = current->next;
+        }
+        
+        T data = current->data;
+        Node* next = current->next;
+
+        current->next = new Node(data);
+        current->next->next = next;
+    }
+    this->size++;
+}
+
+template<typename T>
+void List<T>::swap(int index_a, int index_b) {
+    T data_a;
+    T data_b;
+    int max_index = (index_a > index_b ? index_a : index_b);
+    int min_index = (index_a < index_b ? index_a : index_b);
+
+    Node* node_a, *node_b;
+    Node* current = this->head;
+    for (int i = 0; i < max_index; i++) {
+        if (i == min_index) {
+            data_a = current->data;
+            node_a = current;
+        }
+        current = current->next;
+    }
+    data_b = current->data;
+    node_b = current;
+
+    node_b->data = data_a;
+    node_a->data = data_b;
 }
 
 
@@ -110,7 +158,9 @@ int main() {
     lst.push_back(18);
 
     lst.delete_el(2);
+    lst.dublicate_el(1);
+    lst.swap(0, 3);
 
-    std::cout << lst.at(0) << ' ' << lst.at(1) << ' ' << lst.at(2) << '\n';
+    std::cout << lst.at(0) << ' ' << lst.at(1) << ' ' << lst.at(2) << ' ' << lst.at(3) << '\n';
 
 }
