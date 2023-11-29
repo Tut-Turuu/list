@@ -27,6 +27,9 @@ public:
     void debug() {
 
         Node* current = this->head->next;
+
+        std::cout << "=======\n";
+
         for (int i = 0; i < this->size; i++) {
             std::cout << current->prev << ' ' << current << ' ' << current->next << '\n';
             current = current->next;
@@ -158,6 +161,12 @@ int main() {
 
     lst.debug();
 
+    for (int i = 0; i < lst.get_size(); i++) {
+        std::cout << lst.at(i) << ' ';
+    }
+
+    std::cout << '\n';
+
     lst.delete_el(3);
 
     lst.debug();
@@ -165,7 +174,7 @@ int main() {
 
     for (int i = 0; i < lst.get_size(); i++) {
         std::cout << lst.at(i) << ' ';
-    }    
+    } 
 
     std::cout << '\n';
 
