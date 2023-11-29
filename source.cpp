@@ -34,13 +34,15 @@ private:
     };
 
     int size;
+    // fictitious element
     Node* head;
 };
 
 template<typename T>
 List<T>::List() {
-    size = 0;
-    head = nullptr;
+    this->head = new Node();
+    this->size = 0;
+    
 }
 
 template<typename T>
@@ -56,11 +58,11 @@ List<T>::~List() {
 
 template<typename T>
 void List<T>::push_back(T data) {
-    if (head == nullptr) {
-        head = new Node(data);
+    if (head->next == nullptr) {
+        head->next = new Node(data);
         
     } else {
-        Node* current = this->head;
+        Node* current = this->head->next;
         while (current->next != nullptr) {
             current = current->next;
         }
@@ -74,7 +76,7 @@ T List<T>::at(int index) {
     if (index >= size) {
         throw std::out_of_range("Out of range");
     }
-    Node* current = head;
+    Node* current = head->next;
     for (int i = 0; i < index; i++) {
         current = current->next;
     }
@@ -87,7 +89,7 @@ void List<T>::delete_el(int index) {
         throw std::out_of_range("Out of range");
     }
     Node* previous;
-    Node* current = this->head;
+    Node* current = this->head->next;
     for (int i = 0; i < index; i++) {
         previous = current;
         current = current->next;
@@ -103,7 +105,7 @@ void List<T>::dublicate_el(int index) {
         throw std::out_of_range("Out of range");
     }
 
-    Node* current = this->head;
+    Node* current = this->head->next;
 
     if (this->size == index + 1) {
         for (int i = 0; i < index; i++) {
@@ -133,7 +135,7 @@ void List<T>::swap(int index_a, int index_b) {
     int min_index = (index_a < index_b ? index_a : index_b);
 
     Node* node_a, *node_b;
-    Node* current = this->head;
+    Node* current = this->head->next;
     for (int i = 0; i < max_index; i++) {
         if (i == min_index) {
             data_a = current->data;

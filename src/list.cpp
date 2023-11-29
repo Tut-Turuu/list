@@ -8,7 +8,7 @@ namespace lst {
 
     public:
 
-        List(T data, Node<T>* next);
+        List(T data, Node* next);
 
         ~List();
 
@@ -30,10 +30,10 @@ namespace lst {
         class Node {
             
             public:
-            Node<T>* next;
+            Node* next;
             T data;
 
-            Node(T data = T(), Node<T>* next = nullptr) {
+            Node(T data = T(), Node* next = nullptr) {
                 this->data = data;
                 this->next = next;
             }
@@ -45,7 +45,7 @@ namespace lst {
     };
 
     template<typename T>
-    List<T>::List(T data = T(), Node<T>* next = nullptr) {
+    List<T>::List(T data = T(), Node* next = nullptr) {
 
     }
 
