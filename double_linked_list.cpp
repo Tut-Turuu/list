@@ -89,8 +89,6 @@ public:
 
     void print();
 
-
-    
 };
 
 template<typename T>
@@ -165,9 +163,18 @@ void DoubleLinkedList<T>::swap(Node* a, Node* b) {
 
 template<typename T>
 void DoubleLinkedList<T>::sort() {
-
-
-    
+    Node* ptr_a = this->head->next;
+    Node* ptr_b;
+    for (int i = 0; i < this->size - 1; i++) {
+        ptr_b = ptr_a;
+        for (int j = i; j < this->size; j++) {
+            if (ptr_a->data > ptr_b->data) {
+                swap(ptr_a, ptr_b);
+            }
+            ptr_b = ptr_b->next;
+        }
+        ptr_a = ptr_a->next;
+    }
 }
 
 template<typename T>
@@ -179,7 +186,6 @@ void DoubleLinkedList<T>::print() {
         current = current->next;
     }
     std::cout << '\n';
-
 }
 
 
@@ -198,6 +204,8 @@ int main() {
     lst.delete_el(3);
 
     lst.dublicate_el(2);
+
+    lst.sort();
 
 
     lst.print();

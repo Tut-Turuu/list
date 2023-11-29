@@ -3,24 +3,6 @@
 template<typename T>
 class List {
 
-public:
-
-    List();
-
-    ~List();
-
-    void push_back(T data);
-
-    T at(int index);
-
-    void delete_el(int index);
-
-    void dublicate_el(int index);
-
-    void swap(int index_a, int index_b);
-
-private:
-
     class Node {
         
     public:
@@ -36,6 +18,30 @@ private:
     int size;
     // fictitious element
     Node* head;
+
+public:
+
+    List();
+
+    ~List();
+
+    void push_back(T data);
+
+    T at(int index);
+
+    void delete_el(int index);
+
+    void dublicate_el(int index);
+
+    void swap(Node* a, Node* b);
+
+    void sort();
+
+    void print();
+
+    int get_size() {
+        return this->size;
+    }
 };
 
 template<typename T>
@@ -128,41 +134,85 @@ void List<T>::dublicate_el(int index) {
 }
 
 template<typename T>
-void List<T>::swap(int index_a, int index_b) {
-    T data_a;
-    T data_b;
-    int max_index = (index_a > index_b ? index_a : index_b);
-    int min_index = (index_a < index_b ? index_a : index_b);
+void List<T>::swap(Node* a, Node* b) {
+    T tmp = a->data;
+    a->data = b->data;
+    b->data = tmp;
+}
 
-    Node* node_a, *node_b;
-    Node* current = this->head->next;
-    for (int i = 0; i < max_index; i++) {
-        if (i == min_index) {
-            data_a = current->data;
-            node_a = current;
+template<typename T>
+void List<T>::sort() {
+    Node* ptr_a = this->head->next;
+    Node* ptr_b;
+    for (int i = 0; i < this->size - 1; i++) {
+        ptr_b = ptr_a;
+        for (int j = i; j < this->size; j++) {
+            if (ptr_a->data > ptr_b->data) {
+                swap(ptr_a, ptr_b);
+            }
+            ptr_b = ptr_b->next;
         }
+        ptr_a = ptr_a->next;
+    }
+}
+
+template<typename T>
+void List<T>::print() {
+    Node* current = this->head->next;
+
+    for (int i = 0; i < this->size; i++) {
+        std::cout << current->data << ' ';
         current = current->next;
     }
-    data_b = current->data;
-    node_b = current;
+    std::cout << '\n';
+}
 
-    node_b->data = data_a;
-    node_a->data = data_b;
+bool is_first_digit_seven(int x) {
+    int digit;
+    while (x > 0) {
+        digit = x % 10;
+        x /= 10;
+    }
+    return (digit == 7);
+}
+
+bool is_prime(int x) {
+    
+}
+
+bool is_even(int x) {
+    return x % 2 == 0;
 }
 
 
 int main() {
     List<int> lst;
 
-    lst.push_back(5);
-    lst.push_back(7);
-    lst.push_back(10);
-    lst.push_back(18);
+    int x;
+    bool flag = false;
 
-    lst.delete_el(2);
-    lst.dublicate_el(1);
-    lst.swap(0, 3);
+    while (std::cin >> x) {
+        if (is_first_digit_seven(x)) {
+            flag = true;
+        }
+        lst.push_back(x);
+    }
 
-    std::cout << lst.at(0) << ' ' << lst.at(1) << ' ' << lst.at(2) << ' ' << lst.at(3) << '\n';
+    if (flag) {
+        for (int i = 0; i < lst.get_size(); i++) {
+            if (is_prime(lst.at(i))) {
+                lst.delete_el(i);
+                i--;
+            }
+            if (is_even(lst.at(i))) {
+                lst.dublicate_el(i);
+                i++;
+            }
+        }
+    } else {
+        lst.sort();
+    }
+
+    lst.print();
 
 }
