@@ -3,6 +3,45 @@
 
 template<typename T>
 class DoubleLinkedList {
+
+    class Node {
+
+    public:
+
+        Node* next;
+        Node* prev;
+        T data;
+
+        Node(T data = T(), Node* next = nullptr, Node* prev = nullptr) {
+            this->data = data;
+            this->next = next;
+            this->prev = prev;
+        }
+    };
+
+    int size;
+
+    // fictitious element
+    Node* head;
+
+    Node* get_elem(int index){
+        Node* current;
+
+        if (index < this->size / 2) {
+            current = this->head->next;
+            
+            for (int i = 0; i < index; i++) {
+                current = current->next;
+            }
+        } else {
+            current = this->head->prev;
+            
+            for (int i = this->size - 1; i > index; i--) {
+                current = current->prev;
+            }
+        }
+        return current;
+    }
     
 public:
 
@@ -18,7 +57,9 @@ public:
 
     void dublicate_el(int index);
 
-    void swap(int index_a, int index_b);
+    void swap(Node* a, Node* b);
+
+    void sort();
 
     int get_size() {
         return this->size;
@@ -38,27 +79,17 @@ public:
         std::cout << "=======\n";
     }
 
-private:
-
-    class Node {
-
-    public:
-
-        T data;
-        Node* next;
-        Node* prev;
-
-        Node(T data = T(), Node* next = nullptr, Node* prev = nullptr) {
-            this->data = data;
-            this->next = next;
-            this->prev = prev;
+    void loop() {
+        Node* current = this->head->next;
+        while (true) {
+            std::cout << current->data << '\n';
+            current = current->next;
         }
-    };
+    }
 
-    int size;
+    void print();
 
-    // fictitious element
-    Node* head;
+
     
 };
 
@@ -89,25 +120,12 @@ void DoubleLinkedList<T>::push_back(T data) {
 
 template<typename T>
 T DoubleLinkedList<T>::at(int index) {
-    if (index >= size) {
+    if (index >= this->size) {
         throw std::out_of_range("Out of range");
     }
 
-    Node* current;
+    Node* current = get_elem(index);
 
-    if (index < this->size / 2) {
-        current = this->head->next;
-        
-        for (int i = 0; i < index; i++) {
-            current = current->next;
-        }
-    } else {
-        current = this->head->prev;
-        
-        for (int size = this->size - 1; size > index; size--) {
-            current = current->prev;
-        }
-    }
     return current->data;
 }
 
@@ -117,37 +135,52 @@ void DoubleLinkedList<T>::delete_el(int index) {
         throw std::out_of_range("Out of range");
     }
 
-    Node* current;
-
-    if (index < this->size / 2) {
-        current = this->head->next;
-
-        for (int i = 0; i < index; i++) {
-            current = current->next;
-        }
-    } else {
-        current = this->head->prev;
-        
-        for (int size = this->size - 1; size > index; size--) {
-            current = current->prev;
-        }
-    }
+    Node* current = get_elem(index);
+    
     current->prev->next = current->next;
-    current->prev;
+    current->next->prev = current->prev;
     delete current;
     this->size--;
 }
 
 template<typename T>
 void DoubleLinkedList<T>::dublicate_el(int index) {
+    if (index >= size) {
+        throw std::out_of_range("Out of range");
+    }
 
+    Node* current = get_elem(index);
+
+    current->next->prev = new Node(current->data, current->next, current);
+    current->next = current->next->prev;
+    this->size++;
 }
 
 template<typename T>
-void DoubleLinkedList<T>::swap(int index_a, int index_b) {
-
+void DoubleLinkedList<T>::swap(Node* a, Node* b) {
+    T tmp = a->data;
+    a->data = b->data;
+    b->data = tmp;
 }
 
+template<typename T>
+void DoubleLinkedList<T>::sort() {
+
+
+    
+}
+
+template<typename T>
+void DoubleLinkedList<T>::print() {
+    Node* current = this->head->next;
+
+    for (int i = 0; i < this->size; i++) {
+        std::cout << current->data << ' ';
+        current = current->next;
+    }
+    std::cout << '\n';
+
+}
 
 
 int main() {
@@ -158,24 +191,15 @@ int main() {
     lst.push_back(10);
     lst.push_back(111);
     lst.push_back(22);
+    lst.push_back(99);
 
-    lst.debug();
-
-    for (int i = 0; i < lst.get_size(); i++) {
-        std::cout << lst.at(i) << ' ';
-    }
-
-    std::cout << '\n';
+    lst.print();
 
     lst.delete_el(3);
 
-    lst.debug();
+    lst.dublicate_el(2);
 
 
-    for (int i = 0; i < lst.get_size(); i++) {
-        std::cout << lst.at(i) << ' ';
-    } 
-
-    std::cout << '\n';
+    lst.print();
 
 }
