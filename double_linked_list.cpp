@@ -24,6 +24,17 @@ public:
         return this->size;
     }
 
+    void debug() {
+
+        Node* current = this->head->next;
+        for (int i = 0; i < this->size; i++) {
+            std::cout << current->prev << ' ' << current << ' ' << current->next << '\n';
+            current = current->next;
+        }
+
+        std::cout << "=======\n";
+    }
+
 private:
 
     class Node {
@@ -78,20 +89,23 @@ T DoubleLinkedList<T>::at(int index) {
     if (index >= size) {
         throw std::out_of_range("Out of range");
     }
+
+    Node* current;
+
     if (index < this->size / 2) {
-        Node* current = this->head->next;
+        current = this->head->next;
+        
         for (int i = 0; i < index; i++) {
             current = current->next;
         }
-        return current->data;
     } else {
-        Node* current = this->head->prev;
+        current = this->head->prev;
         
-        for (int size = this->size - 1; size != index; size--) {
+        for (int size = this->size - 1; size > index; size--) {
             current = current->prev;
         }
-        return current->data;
     }
+    return current->data;
 }
 
 template<typename T>
@@ -104,6 +118,7 @@ void DoubleLinkedList<T>::delete_el(int index) {
 
     if (index < this->size / 2) {
         current = this->head->next;
+
         for (int i = 0; i < index; i++) {
             current = current->next;
         }
@@ -115,6 +130,7 @@ void DoubleLinkedList<T>::delete_el(int index) {
         }
     }
     current->prev->next = current->next;
+    current->prev;
     delete current;
     this->size--;
 }
@@ -140,7 +156,11 @@ int main() {
     lst.push_back(111);
     lst.push_back(22);
 
+    lst.debug();
+
     lst.delete_el(3);
+
+    lst.debug();
 
 
     for (int i = 0; i < lst.get_size(); i++) {
