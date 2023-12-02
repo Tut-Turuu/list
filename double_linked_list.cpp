@@ -1,5 +1,5 @@
 #include <iostream>
-
+#include <cmath>
 
 template<typename T>
 class DoubleLinkedList {
@@ -95,11 +95,19 @@ template<typename T>
 DoubleLinkedList<T>::DoubleLinkedList() {
     this->head = new Node();
     this->size = 0;
-
 }
 
 template<typename T>
 DoubleLinkedList<T>::~DoubleLinkedList() {
+
+    Node* current = this->head;
+    Node* tmp;
+    for (int i = 0; i < this->size; i++) {
+        tmp = current;
+        current = current->next;
+        delete tmp;
+    }
+    delete current;
 
 }
 
@@ -188,25 +196,62 @@ void DoubleLinkedList<T>::print() {
     std::cout << '\n';
 }
 
+bool is_first_digit_one(int x) {
+    int digit;
+    while (x > 0) {
+        digit = x % 10;
+        x /= 10;
+    }
+    return (digit == 1);
+}
+
+bool is_divides_by_three_and_not_3(int x) {
+    if (x == 3) {
+        return false;
+    }
+    return !(x % 3);
+}
+
+bool is_prime(int x) {
+    for (int i = 2; i <= sqrt(x); i++) {
+        if (x % i == 0) {
+            return false;
+        }
+    }
+    return true;
+}
 
 int main() {
 
     DoubleLinkedList<int> lst;
 
-    lst.push_back(12);
-    lst.push_back(10);
-    lst.push_back(111);
-    lst.push_back(22);
-    lst.push_back(99);
+    int x, n;
+    bool flag = true;
 
-    lst.print();
+    std::cin >> n;
 
-    lst.delete_el(3);
+    for (int i = 0; i < n; i++) {
+        std::cin >> x;
 
-    lst.dublicate_el(2);
+        if (is_first_digit_one(x)) {
+            flag = false;
+        }
+        lst.push_back(x);
+    }
 
-    lst.sort();
-
+    if (flag) {
+        for (int i = 0; i < lst.get_size(); i++) {
+            if (is_divides_by_three_and_not_3(lst.at(i))) {
+                lst.delete_el(i);
+                i--;
+            } else if (is_prime(lst.at(i))) {
+                lst.dublicate_el(i);
+                i++;
+            }
+        }
+    } else {
+        lst.sort();
+    }
 
     lst.print();
 

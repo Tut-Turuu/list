@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cmath>
+
 
 template<typename T>
 class List {
@@ -177,21 +179,30 @@ bool is_first_digit_seven(int x) {
 }
 
 bool is_prime(int x) {
-    
+    for (int i = 2; i <= sqrt(x); i++) {
+        if (x % i == 0) {
+            return false;
+        }
+    }
+    return true;
 }
 
 bool is_even(int x) {
-    return x % 2 == 0;
+    return (x % 2 == 0);
 }
 
 
 int main() {
     List<int> lst;
 
-    int x;
+    int x, n;
     bool flag = false;
 
-    while (std::cin >> x) {
+    std::cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        std::cin >> x;
+
         if (is_first_digit_seven(x)) {
             flag = true;
         }
@@ -203,8 +214,7 @@ int main() {
             if (is_prime(lst.at(i))) {
                 lst.delete_el(i);
                 i--;
-            }
-            if (is_even(lst.at(i))) {
+            } else if (is_even(lst.at(i))) {
                 lst.dublicate_el(i);
                 i++;
             }
